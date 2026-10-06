@@ -122,9 +122,10 @@ The flight software, built as a **standalone C program** and designed to be **re
 ## Design principles
 
 - **Two independent projects:** simulation and flight software only share the TCP protocol, never code or memory.
-- **Truth isolation:** `flight_sw` only sees raw sensor measurements.
+- **Truth isolation:** `flight_sw` never receives the true position, velocity or attitude. The only data sent to it are raw sensor measurements (accelerometer, barometer, and later gyroscope, magnetometer and GPS), exactly as it would receive them on a real rocket. Everything else (altitude, velocity, attitude) must be computed by the flight software itself (can not be determine from any sensors in real-life).
 - **Physics written in 3D from day one:** 1D and 2D are constrained 3D, so there is one simulator, not three.
-- **Realistic sensors:** measurements are not positions. The accelerometer measures specific force (it reads about zero in free fall, so the filter adds gravity back), and the barometer only works in the atmosphere.
+- **Imperfect sensors by design:** real sensors never return exact values. They produce noisy, biased, quantized and delayed measurements, so the simulator deliberately degrades the ground truth in the same way. The flight software must therefore work with imprecise data and estimate the true state despite it. Without this noise there would be nothing to estimate, and no way to test the filter or the fault detection.
+
 - **Multi-rate fusion:** the accelerometer runs fast (e.g. 1 kHz), the barometer slower (e.g. 50 Hz), GPS slower still. The filter predicts every step and corrects only when a new measurement arrives.
 - **Embedded-style C:** fixed-size buffers, no dynamic allocation, fixed-rate loop, explicit fixed-width types.
 - **Explicit protocol:** fixed-size binary messages, little-endian, versioned. It is the contract that makes `flight_sw` usable with any other client.
