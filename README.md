@@ -192,7 +192,7 @@ Versions are indicative and may be reordered as the project evolves.
 ## Getting started
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/LeZ-fr/rocket-gnc
 cd rocket-gnc
 
 python -m venv .venv
@@ -201,10 +201,3 @@ pip install -r requirements.txt
 ```
 
 Running instructions will be added as soon as `main.py` exists. Build instructions for `flight_sw` will be added with Phase 3.
-
-## References
-
-- Roger Labbe, *Kalman and Bayesian Filters in Python* (free online)
-- Beard & McLain, *Small Unmanned Aircraft: Theory and Practice*
-- PX4 and ArduPilot (EKF2, failure detection) as open-source references
-- Public sensor datasheets (e.g. MPU-6050, BMP280) for realistic noise parameters
